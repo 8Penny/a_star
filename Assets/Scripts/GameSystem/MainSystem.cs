@@ -2,7 +2,7 @@
 using Grid;
 using Pooling;
 
-namespace Systems {
+namespace GameSystem {
     public class MainSystem : MonoBehaviour {
         [SerializeField] private EventHandler _eventHandler;
         [SerializeField] private ObjectPool _objectPool;
