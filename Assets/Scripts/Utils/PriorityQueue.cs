@@ -1,24 +1,28 @@
 ﻿using System;
 
 namespace Utils {
-    public class PriorityQueue<T> {
-        private HeapElement<T>[] _heap = new HeapElement<T>[1000];
+    public class PriorityQueue {
+        private HeapElement[] _heap = new HeapElement[1000];
         private int _lastHeapIndex = -1;
 
         public bool isEmpty => _lastHeapIndex == -1;
 
-        public void Insert(T obj, int priority) {
-            var element = new HeapElement<T>(obj, priority);
+        public void Clear() {
+            _lastHeapIndex = -1;
+        }
+
+        public void Insert(int index, int priority) {
+            var element = new HeapElement(index, priority);
             _heap[++_lastHeapIndex] = element;
             SiftUp(_lastHeapIndex);
         }
 
-        public T ExtractMax() {
+        public int ExtractMax() {
             if (isEmpty) {
-                return default(T);
+                return -1;
             }
 
-            var result = _heap[0].element;
+            var result = _heap[0].index;
             _heap[0] = _heap[_lastHeapIndex];
             --_lastHeapIndex;
             SiftDown(0);
@@ -52,6 +56,7 @@ namespace Utils {
             if (maxElementIndex == elementIndex) {
                 return;
             }
+
             Swap(maxElementIndex, elementIndex);
             SiftDown(maxElementIndex);
         }
@@ -67,29 +72,27 @@ namespace Utils {
                 return -1;
             }
 
-            var parentIndex = (int)Math.Floor((elementIndex - 1) / 2.0f);
+            var parentIndex = (int) Math.Floor((elementIndex - 1) / 2.0f);
             return parentIndex;
         }
     }
 
-    public class HeapElement<T> {
-        private readonly T _element;
+    public class HeapElement {
+        private readonly int _index;
         private readonly int _priority;
 
-        public T element => _element;
+        public int index => _index;
 
-        public HeapElement(T el, int ePriority) {
-            _element = el;
+        public HeapElement(int i, int ePriority) {
+            _index = i;
             _priority = ePriority;
         }
 
-        public static bool operator >(HeapElement<T> h1, HeapElement<T> h2)
-        {
+        public static bool operator >(HeapElement h1, HeapElement h2) {
             return h1._priority > h2._priority;
         }
-        
-        public static bool operator <(HeapElement<T> h1, HeapElement<T> h2)
-        {
+
+        public static bool operator <(HeapElement h1, HeapElement h2) {
             return h1._priority < h2._priority;
         }
     }
