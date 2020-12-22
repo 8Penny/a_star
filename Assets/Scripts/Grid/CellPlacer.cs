@@ -99,7 +99,8 @@ namespace Grid {
 
             var indexToPut = _cells.GetCellIndex(position);
             var isCorrectIndex = indexToPut != -1;
-            if (isCorrectIndex && !_cells[indexToPut].isBusy) {
+            
+            if (isCorrectIndex && _cells[indexToPut].isAvailableToReplace) {
                 var draggingCellType = _draggingCell.cellType;
                 _cPresenters[indexToPut].UpdateType(draggingCellType);
                 _cPresenters[_draggingCell.cellIndex].UpdateType(CellType.Free);

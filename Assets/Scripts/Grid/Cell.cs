@@ -10,6 +10,7 @@ namespace Grid {
         public Vector2 position => _position;
         public CellType type => _type;
         public bool isBusy => type == CellType.Busy;
+        public bool isAvailableToReplace => type == CellType.Free || type == CellType.Path;
 
         public Cell(int ind, Vector2 pos) {
             _index = ind;
