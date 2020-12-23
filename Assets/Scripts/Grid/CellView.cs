@@ -11,7 +11,7 @@ namespace Grid {
         public void SetPresenter(CellPresenter presenter) {
             ForgetOldPresenter();
             _presenter = presenter;
-            _presenter.UpdateEvent += OnUpdate;
+            _presenter.UpdateAction += OnUpdate;
         }
 
         private void OnUpdate() {
@@ -33,7 +33,7 @@ namespace Grid {
 
         private void ForgetOldPresenter() {
             if (_presenter != null) {
-                _presenter.UpdateEvent -= OnUpdate;
+                _presenter.UpdateAction -= OnUpdate;
             }
         }
     }

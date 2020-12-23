@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Grid {
     public class CellPresenter {
@@ -13,12 +14,9 @@ namespace Grid {
 
         public Vector2 position => _position;
         public Color color => _color;
-
-        public delegate void UpdateHandler();
-        public event UpdateHandler UpdateEvent;
-
-        public delegate void CellVisibilityHandler(int index, bool isVisible);
-        public event CellVisibilityHandler ChangeVisibility;
+        
+        public Action UpdateAction;
+        public Action<int, bool> ChangeVisibilityAction;
 
         public int cellIndex => _cell.index;
         public CellType cellType => _cell.type;
@@ -31,8 +29,8 @@ namespace Grid {
         }
 
         public void Start() {
-            ChangeVisibility?.Invoke(cellIndex, cellType != CellType.Free);
-            UpdateEvent?.Invoke();
+            ChangeVisibilityAction?.Invoke(cellIndex, cellType != CellType.Free);
+            UpdateAction?.Invoke();
         }
 
         public void ResetPosition() {
@@ -41,7 +39,7 @@ namespace Grid {
 
         public void UpdatePosition(Vector2 position) {
             _position = position;
-            UpdateEvent?.Invoke();
+            UpdateAction?.Invoke();
         }
 
         public void InvertType() {
@@ -69,10 +67,10 @@ namespace Grid {
             UpdateColor();
 
             if (isVisibilityChanged) {
-                ChangeVisibility?.Invoke(_cell.index, cellType != CellType.Free);
+                ChangeVisibilityAction?.Invoke(_cell.index, cellType != CellType.Free);
             }
 
-            UpdateEvent?.Invoke();
+            UpdateAction?.Invoke();
         }
 
         private void UpdateColor() {

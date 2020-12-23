@@ -29,7 +29,7 @@ namespace Grid {
 
             for (var i = 0; i < _cellCount; i++) {
                 var presenter = new CellPresenter(_cells[i]);
-                presenter.ChangeVisibility += UpdateCellVisibility;
+                presenter.ChangeVisibilityAction += UpdateCellVisibility;
                 _cPresenters[i] = presenter;
             }
 
@@ -138,7 +138,7 @@ namespace Grid {
 
         public void Disable() {
             for (var i = 0; i < _cellCount; i++) {
-                _cPresenters[i].ChangeVisibility -= UpdateCellVisibility;
+                _cPresenters[i].ChangeVisibilityAction -= UpdateCellVisibility;
             }
         }
     }
