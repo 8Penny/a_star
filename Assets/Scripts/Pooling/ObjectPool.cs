@@ -9,30 +9,29 @@ namespace Pooling {
         [SerializeField] private int _poolSize = 100;
 
         private List<CellView> _pooledViews;
+        private int _lastFreeIndex;
 
         public void Load() {
-            _pooledViews = new List<CellView>();
+            _lastFreeIndex = _poolSize - 1;
+            _pooledViews = new List<CellView>(new CellView[_poolSize]);
+
             for (var i = 0; i < _poolSize; i++) {
-                _pooledViews.Add(InstantiateGameObject(false));
+                _pooledViews[i] = InstantiateGameObject(false);
             }
         }
 
         public CellView GetObject() {
-            for (var i = 0; i < _pooledViews.Count; i++) {
-                var currentView = _pooledViews[i];
-                if (currentView.gameObject.activeInHierarchy) {
-                    continue;
-                }
-                currentView.gameObject.SetActive(true);
-                return currentView;
+            if (_lastFreeIndex == -1) {
+                return AddExtraObject();
             }
 
-            return AddExtraObject();
+            var currentView = _pooledViews[_lastFreeIndex--];
+            currentView.gameObject.SetActive(true);
+            return currentView;
         }
 
         private CellView AddExtraObject() {
             var newView = InstantiateGameObject(true);
-            _pooledViews.Add(newView);
             return newView;
         }
 
@@ -45,6 +44,7 @@ namespace Pooling {
 
         public void PoolObject(CellView view) {
             view.gameObject.SetActive(false);
+            _pooledViews[++_lastFreeIndex] = view;
         }
     }
 }
