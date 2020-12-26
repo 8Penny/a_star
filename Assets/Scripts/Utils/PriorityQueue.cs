@@ -77,7 +77,7 @@ namespace Utils {
         }
     }
 
-    public class HeapElement {
+    public struct HeapElement {
         private readonly int _index;
         private readonly int _priority;
 
