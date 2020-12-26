@@ -9,6 +9,7 @@ namespace Grid {
         private readonly int _arraySize;
 
         private readonly Cell[] _cells;
+        private int[] _neighbors = new int[4];
         public int cellCount => _arraySize;
 
         public CellContainer(int columns, int rows, int cSize) {
@@ -24,7 +25,6 @@ namespace Grid {
         }
 
         public int[] GetNeighbors(Cell cell) {
-            var result = new int[4];
 
             var planePosition = cell.position / _cellSize;
             planePosition.y = Math.Abs(planePosition.y);
@@ -39,15 +39,15 @@ namespace Grid {
             var left = hasLeft ? planePosition.y * _columnCount + planePosition.x - 1 : -1;
             var right = hasRight ? planePosition.y * _columnCount + planePosition.x + 1 : -1;
 
-            result[0] = (int) up;
-            result[1] = (int) down;
-            result[2] = (int) left;
-            result[3] = (int) right;
+            _neighbors[0] = (int) up;
+            _neighbors[1] = (int) down;
+            _neighbors[2] = (int) left;
+            _neighbors[3] = (int) right;
 
-            return result;
+            return _neighbors;
         }
 
-        private Vector2 GetPosition(int index) {
+        public Vector2 GetPosition(int index) {
             var row = index / _columnCount;
             var column = index % _columnCount;
             return new Vector2(column, -row);
